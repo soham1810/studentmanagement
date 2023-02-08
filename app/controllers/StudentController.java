@@ -1,5 +1,6 @@
 package controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -39,7 +40,7 @@ public class StudentController extends Controller {
 
     public Result fetchDataFromDatabase() {
         try (Connection connection = db.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM assessment");
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM student");
              ResultSet resultSet = preparedStatement.executeQuery()) {
             while(resultSet.next()) {
                 String name = resultSet.getString("name");
@@ -62,8 +63,8 @@ public class StudentController extends Controller {
             int id = resultSet.getInt("id");
             String name = resultSet.getString("name");
             String email = resultSet.getString("email");
-            String address = resultSet.getString("address");
-            result.add(JsonNodeFactory.instance.objectNode().put("id", id).put("name", name).put("email",email).put("address",address));
+
+            result.add(JsonNodeFactory.instance.objectNode().put("id", id).put("name", name).put("email",email));
         }
         return ok(result);
     }
@@ -77,13 +78,30 @@ public class StudentController extends Controller {
         if (resultSet.next()) {
             String name = resultSet.getString("name");
             String email = resultSet.getString("email");
-            String address = resultSet.getString("address");
-            result.put("id", id).put("name", name).put("email",email).put("address",address);
+            result.put("id", id).put("name", name).put("email",email);
         }
         return ok(result);
     }
+    public Result addStudent(Http.Request request) throws SQLException {
+        Connection connection= db.getConnection();;
+        JsonNode json = request.body().asJson();
+        int id = Integer.parseInt(json.get("id").asText());
+        String name = json.get("name").asText();
+        String email =json.get("email").asText();
 
 
+        PreparedStatement preparedStatement = connection.prepareStatement("insert into student (id,name,email) values(?,?,?)");
+        preparedStatement.setInt(1,id);
+        preparedStatement.setString(2, name);
+        preparedStatement.setString(3, email);
+        preparedStatement.executeUpdate();
 
+        return ok("Data inserted successfully");
+    }
 
 }
+
+
+
+
+

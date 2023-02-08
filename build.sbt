@@ -16,3 +16,4 @@ libraryDependencies += "mysql" % "mysql-connector-java" % "8.0.32"
 //  "org.hibernate" % "hibernate-core" % "5.4.18.Final",
 //  "mysql" % "mysql-connector-java" % "8.0.25"
 libraryDependencies += jdbc
+

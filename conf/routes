@@ -14,3 +14,4 @@ GET     /                           controllers.HomeController.index()
 POST     /addStudent          controllers.StudentController.addStudent(request: Request)
 
 GET      /fetchDataFromDatabase controllers.StudentController.fetchDataFromDatabase()
+
