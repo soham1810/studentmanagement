@@ -26,7 +26,7 @@ public class EsConnection {
         public void addData() throws IOException {
 //        RestClient restClient = esConnect();
             System.out.println("connected to Elastic Search");
-            String json = "{\"id\":\"1\",\"name\":\"Ruksana\"}";
+            String json = "{\"id\":\"1\",\"name\":\"soham\"}";
             Request request = new Request("POST", "/student/_doc/1");
             request.setJsonEntity(json);
             Response response = restClient.performRequest(request);
